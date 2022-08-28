@@ -1,0 +1,60 @@
+<div class="wrapper">
+    <div class="container mt-5 ">
+        <form id="form" class="form" #f="ngForm" >
+          <h2 >Login</h2>
+          <div class="form-control">
+            <label for="email">Email</label>
+            <input
+              type="text"
+              name="email"
+              id="email"
+              placeholder="Enter email"
+              ngModel
+              required
+              email
+              #email="ngModel"
+            />
+            <small *ngIf="email.invalid && email.touched"
+              >Please enter a valid email</small
+            >
+          </div>
+          <div class="form-control">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Enter password"
+              ngModel
+              required
+              minlength="6"
+              maxlength="25"
+              #password="ngModel"
+            />
+            <small *ngIf="password?.errors?.['required'] && password.touched"
+              >Please enter a valid password</small
+            >
+            <small *ngIf="password?.errors?.['minlength'] && password.touched"
+              >Password must exceed 6 characters</small
+            >
+          </div>
+          <!-- <div class="form-control">
+            <label for="password2">Confirm Password</label>
+            <input
+              type="password"
+              name="password2"
+              id="password2"
+              placeholder="Enter password again"
+              ngModel
+              required
+              minlength="6"
+              #password2="ngModel"
+            />
+            <small class="hello" *ngIf="password2.invalid && password2.touched"
+              >Password doesn't match</small
+            >
+          </div> -->
+          <button  type="submit" [disabled]="!f.valid">Submit</button>
+        </form>
+      </div>
+    </div>
