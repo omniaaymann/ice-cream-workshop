@@ -1,0 +1,93 @@
+<div class="container-fluid mt-0 py-2">
+  <div class="container py-4">
+    <div class="row">
+      <div class="col-lg-12 m-0">
+        <h1 class="d-flex text-center justify-content-center">
+          {{ icecreamFlavor?.name }} Icecream
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="owl-carousel product-carousel">
+          <div
+            class="product-item d-flex flex-column align-items-center text-center bg-light rounded py-5 px-3"
+          >
+            <div class="mt-n5 py-3" style="width: 80px">
+              <h4
+                *ngIf="isCone"
+                class="font-weight-bold text-white mb-0 bg-primary"
+              >
+                {{ conePrice | currency }}
+              </h4>
+              <h4
+                *ngIf="!isCone"
+                class="font-weight-bold text-white mb-0 bg-primary"
+              >
+                {{ cupPrice | currency }}
+              </h4>
+            </div>
+
+            <div
+              class="position-relative bg-primary rounded-circle mt-1 mb-4 p-3"
+              style="width: 150px; height: 150px"
+            >
+              <img
+                class="rounded-circle w-100 h-100"
+                src="../../../../../assets/img/product-1.jpg"
+                style="object-fit: cover"
+              />
+            </div>
+            <h5 class="font-weight-bold mb-4">
+              {{ icecreamFlavor?.name }} Ice Cream
+            </h5>
+            <div class="buttons-container">
+              <button
+                (click)="onChoosingCone()"
+                (click)="resetSelection()"
+                [disabled]="isCone"
+              >
+                Cone
+              </button>
+              <button
+                (click)="onChoosingCup()"
+                (click)="resetSelection()"
+                [disabled]="isCup"
+              >
+                Cup
+              </button>
+            </div>
+
+            <label for="cars" class="mb-2 mt-4">Choose a size:</label>
+
+            <select
+              name="icecreamSize"
+              class="mb-3"
+              [disabled]="!isCone && !isCup"
+              (change)="onChoosingSize($event)"
+              #icecreamSelect
+            >
+              <option value="size" disabled selected>Pick a size</option>
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+            <p *ngIf="!isCone && !isCup" class="bg-primary icecream-type-alert">
+              Please choose your icecream type so you can pick a size
+            </p>
+            <button
+              (click)="addToCart()"
+              class="btn btn-sm btn-secondary mt-1 bg-primary"
+              style="border-radius: 15px"
+              [disabled]="
+                (!isCone && !isCup) || !icecreamSize || !isSizeSelected
+              "
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './home.component';
 import { AboutScreenComponent } from './screens/about-screen/about-screen.component';
@@ -41,6 +42,10 @@ const routes: Routes = [
   {
     path: 'user',
     component: UserProfileScreenComponent,
+  },
+  {
+    path: 'productdetails/:id',
+    component: ProductDetailsComponent,
   },
 ];
 

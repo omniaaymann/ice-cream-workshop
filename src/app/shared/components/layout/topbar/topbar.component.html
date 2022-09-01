@@ -1,28 +1,13 @@
-<!-- Topbar Start -->
-<div class="container-fluid bg-primary py-3 d-none d-md-block">
+<div class="container-fluid bg-primary py-3 d-md-block">
   <div class="container">
-    <div class="row">
-      <div class="col-md-6 text-center text-lg-start mb-2 mb-lg-0">
-        <div class="navbar-start">
-          <a class="text-white pe-3" href="">FAQs</a>
-          <span class="text-white">|</span>
-          <a class="text-white px-3" href="">Help</a>
-          <span class="text-white">|</span>
-          <a class="text-white ps-3" href="">Support</a>
-        </div>
-      </div>
-    </div>
-
-      <div class="row d-flex justify-content-end pe-5 me-5">
-        <div class="col-md-6 text-center text-lg-end">
-          <div class="d-inline-flex justify-content-center align-items-center">
-            <a class="text-white px-3" routerLink="/cart">
-              <i class="fa fa-shopping-cart fa-3x"></i
+      <div class="row ">
+          <div class="d-flex justify-content-end align-items-end ">
+            <a class="text-white" routerLink="/cart">
+              <i class="fa fa-cart-plus fa-3x"></i
             ></a>
+            <div class="badge bg-white text-primary" style="font-size: 10px; font-weight: bolder;">{{cartCount}}</div>
           </div>
-        </div>
       </div>
 
   </div>
 </div>
-<!-- Topbar End -->

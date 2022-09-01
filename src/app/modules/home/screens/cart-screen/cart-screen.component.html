@@ -14,25 +14,31 @@
                     class="d-flex justify-content-between align-items-center mb-5"
                   >
                     <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
-                    <h6 class="mb-0 text-muted">3 items</h6>
+                    <h6 class="mb-0 text-muted">{{ totalItems }} items</h6>
                   </div>
                   <hr class="my-4" />
-
-                  <div
-                    class="row mb-4 d-flex justify-content-between align-items-center"
-                  >
-                    <div class="col-md-2 col-lg-2 col-xl-2">
-                      <img
-                        src="../../../../../assets/img/product-2.jpg"
-                        class="img-fluid rounded-3"
-                        alt="Cotton T-shirt"
-                      />
-                    </div>
-                    <div class="col-md-3 col-lg-3 col-xl-3">
-                      <h6 class="text-muted">Shirt</h6>
-                      <h6 class="text-black mb-0">Cotton T-shirt</h6>
-                    </div>
-                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                  <div *ngIf="!itemsAreAvailable">Your Cart Is Empty!</div>
+                  <div *ngIf="itemsAreAvailable">
+                    <div
+                      *ngFor="let cartItem of cartItems; let i = index"
+                      productIndex="i"
+                      class="row mb-4 d-flex justify-content-between align-items-center"
+                    >
+                      <div class="col-md-2 col-lg-2 col-xl-2">
+                        <img
+                          src="../../../../../assets/img/product-2.jpg"
+                          class="img-fluid rounded-3"
+                          alt="vanilla icecream"
+                        />
+                      </div>
+                      <div class="col-md-3 col-lg-3 col-xl-3">
+                        <h6 class="text-muted">Icecream</h6>
+                        <h6 class="text-black mb-0">
+                          {{ cartItem.name | titlecase }} Icecream
+                          {{ cartItem.type | titlecase }}
+                        </h6>
+                      </div>
+                      <!-- <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                       <button
                         class="btn btn-link px-2"
                         onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
@@ -55,124 +61,38 @@
                       >
                         <i class="fa fa-plus"></i>
                       </button>
-                    </div>
-                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                      <h6 class="mb-0">€ 44.00</h6>
-                    </div>
-                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                      <a href="#!" class="text-muted"
-                        ><i class="fa fa-times"></i
-                      ></a>
-                    </div>
-                  </div>
-
-                  <hr class="my-4" />
-
-                  <div
-                    class="row mb-4 d-flex justify-content-between align-items-center"
-                  >
-                    <div class="col-md-2 col-lg-2 col-xl-2">
-                      <img
-                        src="../../../../../assets/img/product-3.jpg"
-                        class="img-fluid rounded-3"
-                        alt="Cotton T-shirt"
-                      />
-                    </div>
-                    <div class="col-md-3 col-lg-3 col-xl-3">
-                      <h6 class="text-muted">Shirt</h6>
-                      <h6 class="text-black mb-0">Cotton T-shirt</h6>
-                    </div>
-                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                      <button
-                        class="btn btn-link px-2"
-                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-                      >
-                        <i class="fa fa-minus"></i>
-                      </button>
-
-                      <input
-                        id="form1"
-                        min="0"
-                        name="quantity"
-                        value="1"
-                        type="number"
-                        class="form-control form-control-sm"
-                      />
-
-                      <button
-                        class="btn btn-link px-2"
-                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-                      >
-                        <i class="fa fa-plus"></i>
-                      </button>
-                    </div>
-                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                      <h6 class="mb-0">€ 44.00</h6>
-                    </div>
-                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                      <a href="#!" class="text-muted"
-                        ><i class="fa fa-times"></i
-                      ></a>
+                    </div> -->
+                      <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                        <h6 class="mb-0">
+                          {{ cartItem.price | currency }} {{ cartItem.size }}
+                        </h6>
+                      </div>
+                      <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                        <button
+                          class="text-muted"
+                          style="border: none"
+                          (click)="deleteItem(i)"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
-
                   <hr class="my-4" />
-
-                  <div
-                    class="row mb-4 d-flex justify-content-between align-items-center"
-                  >
-                    <div class="col-md-2 col-lg-2 col-xl-2">
-                      <img
-                        src="../../../../../assets/img/product-1.jpg"
-                        class="img-fluid rounded-3"
-                        alt="Cotton T-shirt"
-                      />
-                    </div>
-                    <div class="col-md-3 col-lg-3 col-xl-3">
-                      <h6 class="text-muted">Shirt</h6>
-                      <h6 class="text-black mb-0">Cotton T-shirt</h6>
-                    </div>
-                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                      <button
-                        class="btn btn-link px-2"
-                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-                      >
-                        <i class="fa fa-minus"></i>
-                      </button>
-
-                      <input
-                        id="form1"
-                        min="0"
-                        name="quantity"
-                        value="1"
-                        type="number"
-                        class="form-control form-control-sm"
-                      />
-
-                      <button
-                        class="btn btn-link px-2"
-                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-                      >
-                        <i class="fa fa-plus"></i>
-                      </button>
-                    </div>
-                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                      <h6 class="mb-0">€ 44.00</h6>
-                    </div>
-                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                      <a href="#!" class="text-muted"
-                        ><i class="fa fa-times"></i
-                      ></a>
-                    </div>
-                  </div>
-
-                  <hr class="my-4" />
-
+                  
+                <div class="col-md-3 col-lg-3 col-xl-3 d-flex justify-content-start">
+                  <button *ngIf="itemsAreAvailable"
+                  class="btn-dark btn-block btn-lg bg-primary"
+                  style="border-radius: 5px; border-color: transparent; width: 70%;"
+                  (click)="emptyCart()"
+                > <i class="fa fa-trash"></i>
+                 Clear Cart
+                 </button></div>
+                 
                   <div class="pt-5">
                     <h5 class="mb-0">
                       <a routerLink="/products" class="text-body"
-                        ><i class="fa fa-arrow-left me-2"></i>Back to
-                        shop</a
+                        ><i class="fa fa-arrow-left me-2"></i>Back to shop</a
                       >
                     </h5>
                   </div>
@@ -184,14 +104,15 @@
                   <hr class="my-4" />
 
                   <div class="d-flex justify-content-between mb-4">
-                    <h5 class="text-uppercase">items 3</h5>
+                    <h5 class="text-uppercase">items</h5>
+                    <h5> {{ totalItems }} </h5>
                   </div>
 
                   <hr class="my-4" />
 
                   <div class="d-flex justify-content-between mb-5">
                     <h5 class="text-uppercase">Total price</h5>
-                    <h5>€ 137.00</h5>
+                    <h5>{{ totalPrice }}</h5>
                   </div>
 
                   <button
@@ -210,4 +131,3 @@
     </div>
   </div>
 </section>
-
