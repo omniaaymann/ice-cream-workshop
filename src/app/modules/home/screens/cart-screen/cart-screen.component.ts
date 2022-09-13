@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from 'app/services/cart.service';
-
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-cart-screen',
   templateUrl: './cart-screen.component.html',
@@ -9,26 +9,30 @@ import { CartService } from 'app/services/cart.service';
 export class CartScreenComponent implements OnInit {
   cartItems: any = [];
   cartItem: any;
-  totalItems: number = 0;
+  totalItems!: Observable<any>;
   totalPrice!: number;
   prices: any = [];
+  storedItems: any;
   itemsAreAvailable = false;
   constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
-    this.cartService.getProducts().subscribe((products) => {
-      if (products.length >= 1) {
-        this.itemsAreAvailable = true;
-      }
-      this.cartItems = products;
-      this.totalItems = products.length;
-    });
+    this.getProducts();
+    if (this.storedItems?.length >= 1) {
+      this.itemsAreAvailable = true;
+    }
     this.getTotalPrice();
+    this.totalItems = this.cartService.currentItemsCount.asObservable();
+  }
+
+  getProducts() {
+    const storedItems = JSON.parse(localStorage.getItem('carttItems') || '[]');
+    this.storedItems = storedItems;
   }
 
   getTotalPrice() {
     this.prices = [];
-    this.cartItems.forEach((product: any) => {
+    this.storedItems.forEach((product: any) => {
       this.cartItem = product;
       this.prices.push(+product.price);
     });
@@ -39,16 +43,18 @@ export class CartScreenComponent implements OnInit {
   }
 
   deleteItem(i: any) {
-    this.cartItems.splice(i, 1);
-    this.totalItems = this.totalItems - 1;
-    if (this.cartItems.length < 1) {
+    this.storedItems.splice(i, 1);
+    if (this.storedItems.length < 1) {
       this.itemsAreAvailable = false;
     }
+    localStorage.setItem('carttItems', JSON.stringify(this.storedItems));
     this.getTotalPrice();
-    this.cartService.getItemsCount(this.totalItems);
+    this.cartService.getItemsCount(this.storedItems.length);
   }
 
   emptyCart() {
     this.cartService.emptyCart();
+    this.itemsAreAvailable = false;
+    this.totalPrice = 0;
   }
 }

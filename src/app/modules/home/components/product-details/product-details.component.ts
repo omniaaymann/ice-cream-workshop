@@ -2,8 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from 'app/services/cart.service';
-import { map, Subscription } from 'rxjs';
-import { Icecream } from '../../icecream';
+import { RestApiService } from 'app/services/rest-api.service';
+import { filter, map, Subscription } from 'rxjs';
+import { Icecream } from '../../models/icecream';
+import { IcecreamPacket } from '../../models/icecream-packet';
 import { IcecreamFlavor } from '../products/icecream-flavor';
 @Component({
   selector: 'app-product-details',
@@ -15,109 +17,138 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
   icecreamFlavorId!: number;
   icecreamFlavor!: IcecreamFlavor;
-  conePrices!: any;
-  cupPrices!: any;
-  conePrice!: any;
-  cupPrice!: any;
   iceCreamType!: string;
   icecreamList: Icecream[] = [];
   icecreamSize!: any;
   isCone = false;
   isCup = false;
   isSizeSelected = false;
+  icecreamPackets: IcecreamPacket[] = [];
+  icecreamPacketId!: number;
+  icecreamChosenPacket!: any;
+  price!: number;
+  prices: any = {};
+  icecream!: Icecream;
+  icecreamScoops: number = 0;
+  sizeIds: any = {};
+  sizeId: number = 0;
+  scoopNumber!: string;
 
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private cartService: CartService
+    private cartService: CartService,
+    private ApiService: RestApiService
   ) {}
 
   ngOnInit(): void {
     this.subscription = this.route.params.subscribe((params) => {
       this.icecreamFlavorId = params['id'];
     });
-    // console.log(this.icecreamFlavorId);
-    this.getIcecreamDetails();
+    this.loadIcecreamDFlavorDetails();
+    this.loadIcecreamPackets();
   }
 
-  getIcecreamDetails() {
-    this.http
-      .get<any>(`https://localhost:44352/api/Flavour/${this.icecreamFlavorId}`)
-      .subscribe((icecreamFlavor) => {
+  loadIcecreamDFlavorDetails() {
+    this.ApiService.getIcecreamFlavorDetails(this.icecreamFlavorId).subscribe(
+      (icecreamFlavor) => {
         this.icecreamFlavor = icecreamFlavor;
-        // console.log(this.icecreamFlavor);
-      });
+      }
+    );
   }
 
-  onChoosingCone() {
-    this.http
-      .get<any>('https://localhost:44352/api/Packet')
+  loadIcecreamPackets() {
+    this.ApiService.getIcecreamPackets()
       .pipe(
-        map((res) => {
-          this.conePrices = {
-            small: res[0].prices[0],
-            medium: res[0].prices[1],
-            large: res[0].prices[2],
-          };
-
-          return this.conePrices;
+        map((icecreamPackets) => {
+          icecreamPackets.forEach((icecreamPacket: any) => {
+            this.icecreamPackets.push(icecreamPacket);
+            return this.icecreamPackets;
+          });
         })
       )
-      .subscribe((res) => {
-        // console.log(res);
-      });
-    this.iceCreamType = 'cone';
-    this.isCone = true;
-    this.isCup = false;
+      .subscribe();
   }
 
-  onChoosingCup() {
-    this.http
-      .get<any>('https://localhost:44352/api/Packet')
-      .pipe(
-        map((res) => {
-          this.cupPrices = {
-            small: res[1].prices[0],
-            medium: res[1].prices[1],
-            large: res[1].prices[2],
-          };
-          return this.cupPrices;
-        })
-      )
-      .subscribe((res) => {
-        // console.log(res);
-      });
-    this.iceCreamType = 'cup';
-    this.isCone = false;
-    this.isCup = true;
+  onChoosingType(icecreamType: any) {
+    this.icecreamChosenPacket = this.icecreamPackets.filter(
+      (icecreamPacket) => {
+        return icecreamPacket.name === icecreamType;
+      }
+    );
+    this.icecreamChosenPacket.map((icecreamPacket: any) => {
+      console.log(icecreamPacket);
+      this.icecreamPacketId = icecreamPacket.id;
+      this.iceCreamType = icecreamPacket.name;
+    });
+    this.getChosenIcecreamType();
+  }
+
+  getChosenIcecreamType() {
+    this.ApiService.getIcecreamPacketById(this.icecreamPacketId).subscribe(
+      (res) => {
+        console.log(res);
+        if (res.name === 'Cone') {
+          this.isCone = true;
+          this.isCup = false;
+        } else if (res.name === 'Cup') {
+          this.isCone = false;
+          this.isCup = true;
+        }
+        this.prices = {
+          small: +res.prices[0].price,
+          medium: +res.prices[1].price,
+          large: +res.prices[2].price,
+        };
+        this.sizeIds = {
+          small: +res.prices[0].sizeId,
+          medium: +res.prices[1].sizeId,
+          large: +res.prices[2].sizeId,
+        };
+      }
+    );
   }
 
   onChoosingSize(event: any) {
     this.icecreamSize = event.target.value;
-    if (this.isCone) {
-      switch (this.icecreamSize) {
-        case 'small':
-          this.conePrice = +this.conePrices.small.price;
-          break;
-        case 'medium':
-          this.conePrice = +this.conePrices.medium.price;
-          break;
-        case 'large':
-          this.conePrice = +this.conePrices.large.price;
-      }
-    } else if (this.isCup) {
-      switch (this.icecreamSize) {
-        case 'small':
-          this.cupPrice = +this.cupPrices.small.price;
-          break;
-        case 'medium':
-          this.cupPrice = +this.cupPrices.medium.price;
-          break;
-        case 'large':
-          this.cupPrice = +this.cupPrices.large.price;
-      }
+    switch (this.icecreamSize) {
+      case 'small':
+        this.price = +this.prices.small;
+        this.sizeId = this.sizeIds.small;
+        break;
+      case 'medium':
+        this.price = +this.prices.medium;
+        this.sizeId = this.sizeIds.medium;
+        break;
+      case 'large':
+        this.price = +this.prices.large;
+        this.sizeId = this.sizeIds.large;
     }
     this.isSizeSelected = true;
+
+    this.ApiService.getIcecreamSizes()
+      .pipe(
+        map((sizes) => {
+          sizes.forEach((size: any) => {
+            if (size.id === this.sizeId) {
+              this.scoopNumber = size.description;
+            }
+          });
+        })
+      )
+      .subscribe();
+  }
+
+  getScoopNumber() {
+    this.ApiService.getIcecreamSizes()
+      .pipe(
+        filter((size) => {
+          return size.id === this.sizeId;
+        })
+      )
+      .subscribe((res) => {
+        console.log(res);
+      });
   }
 
   resetSelection() {
@@ -126,30 +157,17 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   addToCart() {
-    let icecream = {
-      id: this.icecreamFlavor.id,
-      name: this.icecreamFlavor.name,
+    this.icecream = {
+      flavorId: this.icecreamFlavor.id,
+      packetId: this.icecreamPacketId,
+      sizeId: this.sizeId,
+      flavorName: this.icecreamFlavor.name,
       type: this.iceCreamType,
       size: this.icecreamSize,
-      price: 0,
+      price: this.price,
     };
+    this.cartService.addToCart(this.icecream);
     this.resetSelection();
-    if (this.isCone) {
-      icecream = {
-        ...icecream,
-        price: +this.conePrice,
-      };
-      this.icecreamList?.push(icecream);
-    }
-    if (this.isCup) {
-      icecream = {
-        ...icecream,
-        price: +this.cupPrice,
-      };
-      this.icecreamList?.push(icecream);
-    }
-    this.cartService.addToCart(this.icecreamList);
-    this.cartService.getItemsCount(this.icecreamList.length);
   }
 
   ngOnDestroy(): void {

@@ -1,0 +1,35 @@
+<nav class="navbar navbar-light bg-secondary pb-3 mb-1 pt-3">
+  <div class="container-fluid navbar-container">
+    <a
+      class="navbar-brand disabled text-white  text-center"
+      routerLink="/admin"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Dashboard</a
+    >
+
+    <a
+      class="nav-link text-white"
+      routerLink="/icecreamFlavors"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Icecream Flavors
+    </a>
+    <a
+      class="nav-link text-white"
+      routerLink="/icecreamSizes"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Icecream Sizes</a
+    >
+    <a
+      class="nav-link text-white"
+      routerLink="/icecreamTypes"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Icecream Types</a
+    >
+    <a class="nav-link text-white">Reports</a>
+    <a class="nav-link disabled text-white" tabindex="-1" aria-disabled="true">Log Out</a>
+  </div>
+</nav>

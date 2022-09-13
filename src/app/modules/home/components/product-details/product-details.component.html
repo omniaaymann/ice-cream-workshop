@@ -14,18 +14,15 @@
             class="product-item d-flex flex-column align-items-center text-center bg-light rounded py-5 px-3"
           >
             <div class="mt-n5 py-3" style="width: 80px">
-              <h4
-                *ngIf="isCone"
-                class="font-weight-bold text-white mb-0 bg-primary"
-              >
-                {{ conePrice | currency }}
+              <h4 class="font-weight-bold text-white mb-0 bg-primary">
+                {{ price | currency }}
               </h4>
-              <h4
-                *ngIf="!isCone"
-                class="font-weight-bold text-white mb-0 bg-primary"
+              <hr />
+              <small *ngIf="scoopNumber">
+                {{ scoopNumber }}
+                <span *ngIf="scoopNumber === 'One'">Scoop</span>
+                <span *ngIf="scoopNumber !== 'One'">Scoops</span></small
               >
-                {{ cupPrice | currency }}
-              </h4>
             </div>
 
             <div
@@ -36,6 +33,7 @@
                 class="rounded-circle w-100 h-100"
                 src="../../../../../assets/img/product-1.jpg"
                 style="object-fit: cover"
+                alt="productImage"
               />
             </div>
             <h5 class="font-weight-bold mb-4">
@@ -43,14 +41,14 @@
             </h5>
             <div class="buttons-container">
               <button
-                (click)="onChoosingCone()"
+                (click)="onChoosingType('Cone')"
                 (click)="resetSelection()"
                 [disabled]="isCone"
               >
                 Cone
               </button>
               <button
-                (click)="onChoosingCup()"
+                (click)="onChoosingType('Cup')"
                 (click)="resetSelection()"
                 [disabled]="isCup"
               >

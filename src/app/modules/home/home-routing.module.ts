@@ -9,7 +9,6 @@ import { CartScreenComponent } from './screens/cart-screen/cart-screen.component
 import { ProductsScreenComponent } from './screens/products-screen/products-screen.component';
 import { ServicesScreenComponent } from './screens/services-screen/services-screen.component';
 import { UserProfileScreenComponent } from './screens/user-profile-screen/user-profile-screen.component';
-
 const routes: Routes = [
   {
     path: '',

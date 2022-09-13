@@ -1,0 +1,100 @@
+<h1 class="fw-bold mb-5 mt-5 text-black text-center">Available Flavors</h1>
+
+<table mat-table [dataSource]="icecreamFlavors" class="mat-elevation-z8">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let icecream; let i = index">
+      {{ icecream.id }}
+    </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let icecream; let i = index">
+      {{ icecream.name }}
+    </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="available">
+    <th mat-header-cell *matHeaderCellDef>Available</th>
+    <td mat-cell *matCellDef="let icecream; let i = index">
+      {{ icecream.isAvailable }}
+    </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="addFlavor">
+    <th mat-header-cell *matHeaderCellDef>Delete Flavor</th>
+    <td
+      mat-cell
+      *matCellDef="let icecream; let i = index"
+      class="btn-container"
+    >
+      <button class="primary-btn" (click)="deleteFlavor(icecream.id)">
+        <em class="fa fa-trash bg-primary text-white"></em>
+      </button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="deleteFlavor">
+    <th mat-header-cell *matHeaderCellDef>
+      Add Flavor
+      <!-- Button trigger modal -->
+      <button
+        type="button"
+        class="primary-btn"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        <i
+          class="fa fa-plus text-white"
+          aria-hidden="true"
+        ></i>
+      </button>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add New Flavor</h5>
+              <button
+                type="button"
+                class="btn-close"   
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+                <label for="name">Enter Flavor's Name </label>
+                <input type="text" name="name" id="" #flavorName>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary btn-modal"
+                data-bs-dismiss="modal"
+                (click)="addFlavor(flavorName)"
+              >
+                Save changes
+              </button>
+              <button type="button" class="btn btn-primary btn-modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </th>
+    <td mat-cell *matCellDef="let element; let i = index"></td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+</table>

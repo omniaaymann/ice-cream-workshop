@@ -24,6 +24,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 
+
 @NgModule({
   declarations: [
     HomeComponent,

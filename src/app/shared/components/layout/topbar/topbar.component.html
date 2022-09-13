@@ -3,7 +3,7 @@
       <div class="row ">
           <div class="d-flex justify-content-end align-items-end ">
             <a class="text-white" routerLink="/cart">
-              <i class="fa fa-cart-plus fa-3x"></i
+              <em class="fa fa-cart-plus fa-3x"></em
             ></a>
             <div class="badge bg-white text-primary" style="font-size: 10px; font-weight: bolder;">{{cartCount}}</div>
           </div>
@@ -11,3 +11,52 @@
 
   </div>
 </div>
+
+
+
+
+<!-- import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class CartService {
+  currentItemsCount = new BehaviorSubject<any>(0);
+  storedItemsList = new BehaviorSubject<any>([]);
+  cartItem = new BehaviorSubject<any>({});
+  storedItems: any;
+  cartItemList: any = [];
+  item: any;
+
+  constructor() {}
+
+  getProducts() {
+    return this.storedItemsList.asObservable();
+  }
+
+  addToCart(product: any) {
+    this.item = product;
+    this.cartItemList.push(product);
+    this.storeItemsInLocalStorage();
+  }
+
+  storeItemsInLocalStorage() {
+    const storedItems = JSON.parse(localStorage.getItem('carttItems') || '[]');
+    storedItems.push(this.item);
+    this.storedItems = storedItems;
+    console.log(this.storedItems);
+    localStorage.setItem('carttItems', JSON.stringify(storedItems));
+    this.storedItemsList.next(storedItems);
+    this.currentItemsCount.next(storedItems.length);
+  }
+
+  emptyCart() {
+    this.storedItemsList.next([]);
+    localStorage.clear();
+  }
+
+  getItemsCount(itemsCount: any) {
+    this.currentItemsCount.next(itemsCount);
+  }
+} -->

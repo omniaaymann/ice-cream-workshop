@@ -1,0 +1,32 @@
+$primary: #f195b2;
+$secondary: #62c3e7;
+$light: #ffffff;
+$dark: #333333;
+
+a {
+  cursor: pointer;
+}
+
+.navbar-main {
+  border-radius: 5px;
+  width: 80px;
+}
+
+.navbar-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.active {
+  background-color: $primary !important;
+  color: #fff !important;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+a:hover {
+    color: $dark !important;
+    transform: scale(1.05);
+    transition: transform 0.2s;
+}

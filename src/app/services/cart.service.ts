@@ -6,28 +6,36 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class CartService {
   currentItemsCount = new BehaviorSubject<any>(0);
+  storedItemsList = new BehaviorSubject<any>([]);
+  cartItem = new BehaviorSubject<any>({});
+  storedItems: any;
   cartItemList: any = [];
-  productList = new BehaviorSubject<any>([]);
+  item: any;
 
-  constructor() {}
-
-  getProducts() {
-    return this.productList.asObservable();
+  constructor() {
+    const storedItems = JSON.parse(localStorage.getItem('carttItems') || '[]');
+    this.getItemsCount(storedItems.length);
   }
 
-  // setProduct(product: any) {
-  //   this.cartItemList.push(...product);
-  //   this.productList.next(product);
-  // }
+  addToCart(product: any) {
+    this.item = product;
+    this.cartItemList.push(product);
+    this.storeItemsInLocalStorage();
+  }
 
-  addToCart(productList: any) {
-    this.cartItemList = productList;
-    this.productList.next(this.cartItemList);
+  storeItemsInLocalStorage() {
+    const storedItems = JSON.parse(localStorage.getItem('carttItems') || '[]');
+    storedItems.push(this.item);
+    this.storedItems = storedItems;
+    localStorage.setItem('carttItems', JSON.stringify(storedItems));
+    this.storedItemsList.next(this.storedItems);
+    this.currentItemsCount.next(this.storedItems.length);
   }
 
   emptyCart() {
-    this.cartItemList = [];
-    this.productList.next(this.cartItemList);
+    this.storedItemsList.next([]);
+    this.getItemsCount(0);
+    localStorage.clear();
   }
 
   getItemsCount(itemsCount: any) {

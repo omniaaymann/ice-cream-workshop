@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { RestApiService } from 'app/services/rest-api.service';
 import { map } from 'rxjs';
 import { IcecreamFlavor } from './icecream-flavor';
 @Component({
@@ -8,25 +9,26 @@ import { IcecreamFlavor } from './icecream-flavor';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
-  icecreamFlavors: IcecreamFlavor[] = []
+  icecreamFlavors: IcecreamFlavor[] = [];
   icecreamFlavorId!: number;
-  @Output() flavorId = new EventEmitter()
-  constructor(private http: HttpClient) {}
+  @Output() flavorId = new EventEmitter();
+  constructor(private http: HttpClient, private ApiService: RestApiService) {}
 
   ngOnInit(): void {
-    this.getIcecreamFlavour();
-    this.getIcecreamFlavorId();
+    this.loadIcecreamFlavors();
   }
 
-  getIcecreamFlavour() {
-    this.http
-      .get<any>('https://localhost:44352/api/Flavour')
+  loadIcecreamFlavors() {
+    this.ApiService.getIcecreamFlavors()
       .pipe(
         map((icecreamFlavors) => {
           icecreamFlavors.forEach((icecreamFlavor: IcecreamFlavor) => {
-            this.icecreamFlavors.push({ id: icecreamFlavor.id, name: icecreamFlavor.name, isAvailable: icecreamFlavor.isAvailable });
+            this.icecreamFlavors.push({
+              id: icecreamFlavor.id,
+              name: icecreamFlavor.name,
+              isAvailable: icecreamFlavor.isAvailable,
+            });
             this.icecreamFlavorId = icecreamFlavor.id;
-            console.log(icecreamFlavor.id)
           });
           return this.icecreamFlavors;
         })
@@ -34,12 +36,5 @@ export class ProductsComponent implements OnInit {
       .subscribe((response) => {
         console.log(response);
       });
-  }
-
-  //only for debugging will be removed
-  getIcecreamFlavorId() {
-    this.http.get('https://localhost:44352/api/Packet').subscribe((res)=>{
-      console.log(res)
-    })
   }
 }
